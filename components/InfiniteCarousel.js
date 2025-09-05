@@ -32,21 +32,21 @@ const InfiniteCarousel = ({
       className={`relative flex overflow-hidden ${
         direction === "vertical" ? "flex-col" : ""
       } ${className}`}
-    //   onMouseEnter={() => pauseOnHover && controls.stop()}
-    //   onMouseLeave={() => {
-    //     if (pauseOnHover) {
-    //       controls.start({
-    //         x: direction === "horizontal" ? "-100%" : 0,
-    //         y: direction === "vertical" ? "-100%" : 0,
-    //         transition: {
-    //           duration: speed,
-    //           ease: "linear",
-    //           repeat: Infinity,
-    //           repeatType: "loop",
-    //         },
-    //       });
-    //     }
-    //   }}
+      onMouseEnter={() => pauseOnHover && controls.stop()}
+      onMouseLeave={() => {
+        if (pauseOnHover) {
+          controls.start({
+            x: direction === "horizontal" ? "-100%" : 0,
+            y: direction === "vertical" ? "-100%" : 0,
+            transition: {
+              duration: speed,
+              ease: "linear",
+              repeat: Infinity,
+              repeatType: "loop",
+            },
+          });
+        }
+      }}
     >
       <div
         className={`flex ${direction === "vertical" ? "flex-col" : ""}`}

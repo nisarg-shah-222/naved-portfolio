@@ -8,12 +8,20 @@ export default function Navbar() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+    }
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.body.className = `theme-${savedTheme}`;
     }
   }, [isMenuOpen]);
 
@@ -24,12 +32,19 @@ export default function Navbar() {
     });
   };
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.body.className = `theme-${newTheme}`;
+  };
+
   return (
    <>
      <header className="fixed top-0 left-0 right-0 flex items-center w-full h-16 z-50 bg-[#0e0e0e]/70 backdrop-blur-md">
       <div className="flex w-full justify-between items-center px-6 md:px-12 lg:px-20">
         <Link href="/" className="text-sm font-medium">Naved</Link>
-        <button 
+        <button
           className="sm:hidden p-2 z-50"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -50,10 +65,18 @@ export default function Navbar() {
         </nav>
         
         <div className="hidden sm:flex gap-1 text-xs bg-[#1a1a1a] p-1 rounded-full">
-          <Link href="/"><button className={`px-4 py-1 rounded-full transition duration-200 ${router.pathname === '/' ? 'bg-[#2a2a2a] text-white' : 'text-[#a1a1a1]'}`}>Work</button></Link>
-          <Link href="/about"><button className={`px-4 py-1 rounded-full transition duration-200 ${router.pathname === '/about' ? 'bg-[#2a2a2a] text-white' : 'text-[#a1a1a1]'}`}>About</button></Link>
-          <Link href="https://t.me/navedux"><button className={`px-4 py-1 rounded-full transition duration-200 ${router.pathname === '/contact' ? 'bg-[#2a2a2a] text-white' : 'text-[#a1a1a1]'}`}>Say hi</button></Link>
+          <Link href="/"><button className={`px-4 py-1 rounded-full transition duration-200 ${router.pathname === '/' ? 'bg-gradient-dark-to-purple text-white' : 'text-[#a1a1a1]'}`}>Work</button></Link>
+          <Link href="/about"><button className={`px-4 py-1 rounded-full transition duration-200 ${router.pathname === '/about' ? 'bg-gradient-dark-to-pink text-white' : 'text-[#a1a1a1]'}`}>About</button></Link>
+          <Link href="https://t.me/navedux"><button className={`px-4 py-1 rounded-full transition duration-200 ${router.pathname === '/contact' ? 'bg-gradient-dark-to-blue text-white' : 'text-[#a1a1a1]'}`}>Say hi</button></Link>
         </div>
+        
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          className="ml-4 sm:hidden text-sm"
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
       </div>
 
    
@@ -67,7 +90,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed sm:hidden inset-0 bg-[#0e0e0e]/80 backdrop-blur-md text-white z-40 flex flex-col justify-between p-6 pt-4"
+            className="fixed sm:hidden inset-0 bg-gradient-dark-to-purple/80 backdrop-blur-md text-white z-40 flex flex-col justify-between p-6 pt-4"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -76,8 +99,13 @@ export default function Navbar() {
             >
               <div>
                 <div className="flex justify-between items-center mb-10">
-
-               
+                  <h2 className="text-xl font-medium">Menu</h2>
+                  <button
+                    onClick={toggleTheme}
+                    className="text-sm"
+                  >
+                    {theme === 'dark' ? '☀️' : '🌙'}
+                  </button>
                 </div>
                 <div className="flex flex-col gap-6 text-2xl mb-12">
                   <Link href="/" onClick={() => setIsMenuOpen(false)}>Work</Link>
